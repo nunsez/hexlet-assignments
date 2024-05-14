@@ -9,7 +9,7 @@ public final class App {
         return apartments.stream()
             .sorted()
             .limit(count)
-            .map(String::valueOf)
+            .map(Home::toString)
             .toList();
     }
 
