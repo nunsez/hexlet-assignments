@@ -2,11 +2,12 @@
 @param UserPage page
 
 @template.layout.page(
+
 content = @`
-    <div>
-        <div>${page.getUser().getFirstName()}</div>
-        <div>${page.getUser().getLastName()}</div>
-        <div>${page.getUser().getEmail()}</div>
-    </div>
+    <h2>${page.getUser().getFirstName()} ${page.getUser().getLastName()}</h2>
+    <div>${page.getUser().getEmail()}</div>
+`,
+footer = @`
+    <p>Thanks for visiting, come again soon!</p>
 `
 )
