@@ -2,23 +2,26 @@
 @param UsersPage page
 
 @template.layout.page(
-    content = @`
-        <form action="/users" method="get">
-            <input type="search" name="term" value="${page.firstName()}" />
-            <input type="submit" value="Search" />
-        </form>
-        @if(!page.users().isEmpty())
-            <table>
-                <tbody>
-                @for(var user : page.users())
-                    <tr>
-                        <td>${user.getFirstName()}</td>
-                        <td>${user.getLastName()}</td>
-                        <td>${user.getEmail()}</td>
-                    </tr>
-                @endfor
-                </tbody>
-            </table>
-        @endif
+content = @`
+    <h1>Пользователи</h1>
+    <form class="input-group" action="/users">
+        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="term" value="${page.term()}" />
+        <input type="submit" class="btn btn-outline-primary" value="Search">
+    </form>
+    <table class="table table-striped">
+        @for(var user : page.users())
+            <tr>
+                <td>
+                    ${user.getId()}
+                </td>
+                <td>
+                    ${user.getFirstName()}
+                </td>
+                <td>
+                    ${user.getLastName()}
+                </td>
+            </tr>
+        @endfor
+    </table>
 `
 )

@@ -23,24 +23,22 @@ public final class App {
 
         // BEGIN
         app.get("/users", ctx -> {
-            var firstName = ctx.queryParam("term");
+            var term = ctx.queryParam("term");
 
             List<User> users;
 
-            if (firstName == null) {
+            if (term == null) {
                 users = USERS;
             } else {
-                var normlizedName = firstName.strip().toLowerCase();
+                var normalizedTerm = term.strip().toLowerCase();
+
                 users = USERS.stream()
-                    .filter(user -> user.getFirstName()
-                        .strip()
-                        .toLowerCase()
-                        .contains(normlizedName))
+                    .filter(user -> StringUtils.containsIgnoreCase(user.getFirstName(), normalizedTerm))
                     .toList();
             }
 
 
-            var page = new UsersPage(firstName, users);
+            var page = new UsersPage(term, users);
             ctx.render("users/index.jte", model("page", page));
         });
         // END
