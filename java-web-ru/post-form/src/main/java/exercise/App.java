@@ -3,6 +3,8 @@ package exercise;
 import io.javalin.Javalin;
 import java.util.List;
 import static io.javalin.rendering.template.TemplateUtil.model;
+
+import io.javalin.http.BadRequestResponse;
 import io.javalin.rendering.template.JavalinJte;
 import exercise.model.User;
 import exercise.dto.users.UsersPage;
@@ -31,21 +33,16 @@ public final class App {
 
         // BEGIN
         app.post("/users", ctx -> {
-            var firstName = ctx.formParamAsClass("firstName", String.class).getOrDefault("");
-            firstName = StringUtils.capitalize(firstName.strip());
+            var firstName = StringUtils.capitalize(ctx.formParam("firstName"));
+            var lastName = StringUtils.capitalize(ctx.formParam("lastName"));
+            var email = ctx.formParamAsClass("email", String.class)
+                .getOrDefault("").strip().toLowerCase();
+            var password = ctx.formParamAsClass("password", String.class)
+                .getOrThrow((e) -> new BadRequestResponse("password required"));
+            var encryptedPassword = Security.encrypt(password);
 
-            var lastName = ctx.formParamAsClass("lastName", String.class).getOrDefault("");
-            lastName = StringUtils.capitalize(lastName.strip());
-
-            var email = ctx.formParamAsClass("email", String.class).getOrDefault("");
-            email = email.strip().toLowerCase();
-
-            var password = ctx.formParamAsClass("password", String.class).getOrDefault("");
-            password = Security.encrypt(password);
-
-            var user = new User(firstName, lastName, email, password);
+            var user = new User(firstName, lastName, email, encryptedPassword);
             UserRepository.save(user);
-
             ctx.redirect("/users");
         });
 
