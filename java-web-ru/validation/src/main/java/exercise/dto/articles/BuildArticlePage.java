@@ -10,5 +10,8 @@ public record BuildArticlePage(
     String content,
     Map<String, List<ValidationError<Object>>> errors
 ) {
+    public BuildArticlePage() {
+        this("", "", null);
+    }
 }
 // END

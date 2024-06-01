@@ -2,34 +2,33 @@
 @param BuildArticlePage page
 
 @template.layout.page(
-    content = @`
-    !{var errors = page.errors();}
-
-    @if(errors != null)
-        <ul>
-            @for(var validator : errors.values())
-                @for(var error : validator)
-                    <li>${error.getMessage()}</li>
+content = @`
+    @if(page.errors() != null)
+        <div class="mb-3">
+            <ul>
+                @for(var validator : page.errors().values())
+                    @for(var error : validator)
+                        <li>${error.getMessage()}</li>
+                    @endfor
                 @endfor
-            @endfor
-        </ul>
+            </ul>
+        </div>
     @endif
 
-    <form action="/articles" method="post">
-        <div>
-            <label>
-                Название
-                <input type="text" required name="title" value="${page.title()}" />
-            </label>
-        </div>
-        <div>
-            <label>
-                Содержимое
-                <textarea name="content">${page.content()}</textarea>
-            </label>
-        </div>
-
-        <input type="submit" value="Создать" />
-    </form>
+    <div class="mx-auto p-4 py-md-5">
+        <form action="/articles" method="post">
+            <div class="mb-3">
+                <label class="form-label">
+                    Название
+                    <input type="text" class="form-control" name="title" value="${page.title()}" />
+                </label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Содержание</label>
+                <textarea class="form-control" rows="20" cols="70" type="text" name="content">${page.content()}</textarea>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Сохранить" />
+        </form>
+    </div>
 `
 )

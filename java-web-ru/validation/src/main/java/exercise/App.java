@@ -32,30 +32,32 @@ public final class App {
 
         // BEGIN
         app.get("/articles/build", ctx -> {
-            var page = new BuildArticlePage("", "", null);
+            var page = new BuildArticlePage();
             ctx.render("articles/build.jte", model("page", page));
         });
 
         app.post("/articles", ctx -> {
-            var title = ctx.formParamAsClass("title", String.class)
-                .check(t -> t.length() >= 2, "Название не должно быть короче двух символов")
-                .check(t -> !ArticleRepository.existsByTitle(t), "Статья с таким названием уже существует");
-
-            var content = ctx.formParamAsClass("content", String.class)
-                .check(c -> c.length() >= 10, "Статья должна быть не короче 10 символов");
-
             try {
-                var article = new Article(title.get(), content.get());
+                var title = ctx.formParamAsClass("title", String.class)
+                    .check(t -> t.length() >= 2, "Название не должно быть короче двух символов")
+                    .check(t -> !ArticleRepository.existsByTitle(t), "Статья с таким названием уже существует")
+                    .get();
+
+                var content = ctx.formParamAsClass("content", String.class)
+                    .check(c -> c.length() >= 10, "Статья должна быть не короче 10 символов")
+                    .get();
+
+                var article = new Article(title, content);
+
                 ArticleRepository.save(article);
+
                 ctx.redirect("/articles");
             } catch (ValidationException e) {
-                var page = new BuildArticlePage(
-                    ctx.formParam("title"),
-                    ctx.formParam("content"),
-                    e.getErrors()
-                );
-                ctx.status(422);
-                ctx.render("articles/build.jte", model("page", page));
+                var title = ctx.formParam("title");
+                var content = ctx.formParam("content");
+                var page = new BuildArticlePage(title, content, e.getErrors());
+
+                ctx.status(422).render("articles/build.jte", model("page", page));
             }
         });
         // END
