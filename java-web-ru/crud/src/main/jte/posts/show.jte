@@ -3,9 +3,14 @@
 
 @template.layout.page(
 content = @`
-    <div>
-        <div>${page.post().getName()}</div>
-        <div>${page.post().getBody()}</div>
-    </div>
+    <main>
+        <div class="mx-auto p-4 py-md-5">
+            <h1>${page.post().getName()}</h1>
+        </div>
+
+        <div class="mx-auto p-4 py-md-5">
+            ${page.post().getBody()}
+        </div>
+    </main>
 `
 )
