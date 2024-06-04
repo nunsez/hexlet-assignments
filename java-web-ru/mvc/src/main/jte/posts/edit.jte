@@ -16,7 +16,7 @@ content = @`
     @endif
 
     <div class="mx-auto p-4 py-md-5">
-        <form action="/posts" method="post">
+        <form action="/posts/${page.post().getId()}" method="post">
             <div class="mb-3">
                 <label class="form-label">
                     Название
@@ -27,7 +27,7 @@ content = @`
                 <label class="form-label">Содержание</label>
                 <textarea class="form-control" rows="20" cols="70" type="text" name="body">${page.post().getBody()}</textarea>
             </div>
-            <input type="submit" class="btn btn-primary" value="Сохранить" />
+            <input type="submit" class="btn btn-primary" value="Обновить" />
         </form>
     </div>
 `

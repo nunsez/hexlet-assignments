@@ -30,9 +30,5 @@ public class NamedRoutes {
     public static String editPostPath(Long id) {
         return editPostPath(String.valueOf(id));
     }
-
-    public static String postsPath(String id) {
-        return "/posts/" + id;
-    }
     // END
 }

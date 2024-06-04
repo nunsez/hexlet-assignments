@@ -65,7 +65,7 @@ public class PostsController {
         ctx.render("posts/edit.jte", model("page", page));
     }
 
-    public static void put(Context ctx) {
+    public static void update(Context ctx) {
         var id = ctx.pathParamAsClass("id", Long.class).get();
 
         try {
