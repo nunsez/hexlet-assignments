@@ -21,23 +21,31 @@ public class PostsController {
     // BEGIN
     public static void index(Context ctx) {
         var posts = PostRepository.getEntities();
-        var flash = ctx.<String>consumeSessionAttribute("flash");
         var page = new PostsPage(posts);
-        page.setFlash(flash);
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
+        page.setFlashType(ctx.consumeSessionAttribute("flash-type"));
         ctx.render("posts/index.jte", model("page", page));
     }
 
     public static void create(Context ctx) {
-        var name = ctx.formParamAsClass("name", String.class)
-            .check(n -> n.length() >= 2, "Имя должно быть длиннее двух символов")
-            .get();
-        var body = ctx.formParam("body");
+        try {
+            var name = ctx.formParamAsClass("name", String.class)
+                .check(value -> value.length() >= 2, "Название не должно быть короче двух символов")
+                .get();
+            var body = ctx.formParam("body");
 
-        var post = new Post(name, body);
-        PostRepository.save(post);
+            var post = new Post(name, body);
+            PostRepository.save(post);
 
-        ctx.sessionAttribute("flash", "Пост был успешно создан");
-        ctx.redirect(NamedRoutes.postsPath());
+            ctx.sessionAttribute("flash", "Пост был успешно создан!");
+            ctx.sessionAttribute("flash-type", "success");
+            ctx.redirect(NamedRoutes.postsPath());
+        } catch (ValidationException e) {
+            var name = ctx.formParam("name");
+            var body = ctx.formParam("body");
+            var page = new BuildPostPage(name, body, e.getErrors());
+            ctx.render("posts/build.jte", model("page", page)).status(422);
+        }
     }
     // END
 
