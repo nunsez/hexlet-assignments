@@ -5,22 +5,26 @@
 @template.layout.page(
 content = @`
     @if(page.getError() != null)
-        <p>${page.getError()}</p>
+        <div class="mb-3">
+            ${page.getError()}
+        </div>
     @endif
-
-    <form action="${NamedRoutes.loginPath()}" method="post">
-        <label>
-            Имя
-            <input name="name" type="text" value="${page.getName()}"/>
-        </label>
-        <label>
-            Пароль
-            <input name="password" type="password" value=""/>
-        </label>
-        <label>
-            Войти
-            <input type="submit"/>
-        </label>
-    </form>
+    <div class="mx-auto p-4 py-md-5">
+        <form action="${NamedRoutes.loginPath()}" method="post">
+            <div class="mb-3">
+                <label class="form-label">
+                    Имя
+                    <input type="text" class="form-control" name="name" value="${page.getName()}" />
+                </label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">
+                    Пароль
+                    <input type="password" class="form-control" name="password" />
+                </label>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Войти" />
+        </form>
+    </div>
 `
 )
