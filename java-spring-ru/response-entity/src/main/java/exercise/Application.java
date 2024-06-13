@@ -32,17 +32,22 @@ public class Application {
     // BEGIN
     // Запуск приложения
     @GetMapping("/posts") // Список постов
-    public ResponseEntity<List<Post>> index() {
-        var body = posts.stream().toList();
-        return ResponseEntity.ok()
-            .header("X-Total-Count", Integer.toString(body.size()))
-            .body(body);
+    public ResponseEntity<List<Post>> index(
+        @RequestParam(defaultValue = "1") Integer page,
+        @RequestParam(defaultValue = "10") Integer limit
+    ) {
+        var result = posts.stream().skip((long) (page - 1) * limit).limit(limit).toList();
+        return ResponseEntity
+            .ok()
+            .header("X-Total-Count", String.valueOf(posts.size()))
+            .body(result);
     }
 
     @PostMapping("/posts") // Создание поста
     public ResponseEntity<Post> create(@RequestBody Post post) {
         posts.add(post);
-        return ResponseEntity.status(HttpStatus.CREATED).body(post);
+        var location = URI.create("/posts");
+        return ResponseEntity.created(location).body(post);
     }
 
     @GetMapping("/posts/{id}") // Вывод поста
