@@ -10,8 +10,9 @@ public class Night implements Daytime {
 
     // BEGIN
     @PostConstruct
-    public void postConstruct() {
-        System.out.println("Бин Night был создан");
+    public void init() {
+        var message = "\nBean Night is initialized!\n";
+        System.out.println(message);
     }
     // END
 }
