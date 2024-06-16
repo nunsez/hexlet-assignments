@@ -20,14 +20,14 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface ProductMapper {
 
-    @Mapping(target = "category.id", source = "categoryId")
+    @Mapping(target = "category", source = "categoryId")
     Product map(ProductCreateDTO dto);
 
     @Mapping(target = "categoryId", source = "category.id")
     @Mapping(target = "categoryName", source = "category.name")
     ProductDTO map(Product model);
 
-    @Mapping(target = "category.id", source = "categoryId")
+    @Mapping(target = "category", source = "categoryId")
     void update(ProductUpdateDTO data, @MappingTarget Product model);
 
 }
