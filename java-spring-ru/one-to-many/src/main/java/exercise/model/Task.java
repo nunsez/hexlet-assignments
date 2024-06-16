@@ -42,7 +42,7 @@ public class Task {
 
     // BEGIN
     @NotNull
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User assignee;
     // END
 }
