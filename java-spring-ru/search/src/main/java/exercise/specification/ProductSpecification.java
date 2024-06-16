@@ -28,28 +28,28 @@ public final class ProductSpecification {
     private static Specification<Product> withTitleCont(String title) {
         return (root, query, cb) -> {
             if (title == null) return cb.conjunction();
-            return cb.like(root.get("title"), title);
+            return cb.like(root.get("title"), "%" + title + "%");
         };
     }
 
     private static Specification<Product> withPriceLt(Integer price) {
         return (root, query, cb) -> {
             if (price == null) return cb.conjunction();
-            return cb.lt(root.get("price"), price);
+            return cb.lessThan(root.get("price"), price);
         };
     }
 
     private static Specification<Product> withPriceGt(Integer price) {
         return (root, query, cb) -> {
             if (price == null) return cb.conjunction();
-            return cb.gt(root.get("price"), price);
+            return cb.greaterThan(root.get("price"), price);
         };
     }
 
     private static Specification<Product> withRatingGt(Double rating) {
         return (root, query, cb) -> {
             if (rating == null) return cb.conjunction();
-            return cb.gt(root.get("rating"), rating);
+            return cb.greaterThan(root.get("rating"), rating);
         };
     }
 
