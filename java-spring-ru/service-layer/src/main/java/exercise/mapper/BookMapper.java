@@ -26,9 +26,6 @@ public interface BookMapper {
     BookDTO map(Book model);
 
     @Mapping(target = "author", source = "authorId")
-    Book map(BookDTO dto);
-
-    @Mapping(target = "author", source = "authorId")
     Book map(BookCreateDTO dto);
     // END
 

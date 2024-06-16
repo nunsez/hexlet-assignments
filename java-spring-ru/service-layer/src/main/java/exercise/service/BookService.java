@@ -4,9 +4,9 @@ package exercise.service;
 import exercise.dto.BookCreateDTO;
 import exercise.dto.BookDTO;
 import exercise.dto.BookUpdateDTO;
+import exercise.exception.ResourceNotFoundException;
 import exercise.mapper.BookMapper;
 import exercise.repository.BookRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,7 @@ public class BookService {
 
     public BookDTO findById(Long id) {
         var books = bookRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("Not found"));
         return bookMapper.map(books);
     }
 
@@ -42,7 +42,7 @@ public class BookService {
 
     public BookDTO update(Long id, BookUpdateDTO data) {
         var book = bookRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("Not found"));
         bookMapper.update(data, book);
         bookRepository.save(book);
         return bookMapper.map(book);

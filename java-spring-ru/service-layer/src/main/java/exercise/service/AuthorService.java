@@ -6,7 +6,6 @@ import exercise.dto.AuthorUpdateDTO;
 import exercise.exception.ResourceNotFoundException;
 import exercise.mapper.AuthorMapper;
 import exercise.repository.AuthorRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,7 @@ public class AuthorService {
 
     public AuthorDTO findById(Long id) {
         var author = authorRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("Not found"));
         return authorMapper.map(author);
     }
 
@@ -42,7 +41,7 @@ public class AuthorService {
 
     public AuthorDTO update(Long id, AuthorUpdateDTO data) {
         var author = authorRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("Not found"));
         authorMapper.update(data, author);
         authorRepository.save(author);
         return authorMapper.map(author);
