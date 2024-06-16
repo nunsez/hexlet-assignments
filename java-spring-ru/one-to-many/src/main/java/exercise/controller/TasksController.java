@@ -67,9 +67,11 @@ public class TasksController {
 
         var assigneeId = data.getAssigneeId();
         if (assigneeId != null) {
-            var assignee = userRepository.findById(assigneeId).get();
+            var assignee = userRepository.findById(assigneeId)
+                .orElseThrow(() -> new EntityNotFoundException("Not found"));
             task.setAssignee(assignee);
         }
+
         taskRepository.save(task);
         return taskMapper.map(task);
     }
