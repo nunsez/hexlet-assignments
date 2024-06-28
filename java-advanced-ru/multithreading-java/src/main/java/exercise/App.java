@@ -1,29 +1,37 @@
 package exercise;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.logging.Level;
 
 class App {
     private static final Logger LOGGER = Logger.getLogger("AppLogger");
 
     // BEGIN
     public static Map<String, Integer> getMinMax(int[] numbers) {
-        var min = new MinThread(numbers);
-        var max = new MaxThread(numbers);
 
-        min.start();
-        max.start();
+        var minThread = new MinThread(numbers);
+        var maxThread = new MaxThread(numbers);
+
+        minThread.start();
+        LOGGER.info("Thread " + minThread.getName() + " started");
+        maxThread.start();
+        LOGGER.info("Thread " + maxThread.getName() + " started");
 
         try {
-            min.join();
-            max.join();
-        } catch (InterruptedException ignored) {}
+            minThread.join();
+            LOGGER.info("Thread " + minThread.getName() + " finished");
+            maxThread.join();
+            LOGGER.info("Thread " + maxThread.getName() + " finished");
+        } catch (InterruptedException e) {
+            LOGGER.warning("Поток был прерван");
+        }
 
-        var result = new HashMap<String, Integer>();
-        result.put("min", min.getMin());
-        result.put("max", max.getMax());
+        var result = Map.of(
+            "min", minThread.getMin(),
+            "max", maxThread.getMax()
+        );
+
+        LOGGER.info("Result: " + result.toString());
 
         return result;
     }
